@@ -1,32 +1,27 @@
-import { Component } from "react";
-import { connect } from "react-redux";
-import * as actions from "./Redux/Actions/MembersActions";
-import MembersListData from "./Components/MembersListData";
-import "./styles.css";
+import React, { createContext, useState } from "react";
+import logo from './logo.svg';
+import './App.css';
+import {UseStateCompo} from "./HooksComponents/UseStateCompo";
+import UseCallback from "./HooksComponents/UseCallback";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  componentDidMount() {
-    this.props.membersListAction();
+function App() {
+  const [data, setData] = useState("Initial Data")
+  const updateStateFunc = () => {
+    setData("Update the state using react hooks")
   }
 
-  render() {
-    return (
-      <div className="App">
-        <MembersListData membersList={this.props.membersList} />
-      </div>
-    );
-  }
+  // createContext
+  const [contextData, setContextData] = useState("useContext Data from App.js file")
+  return (
+    <div className="App">
+    {/* createContext */}
+      <UserContext.Provider value={contextData}>
+      <UseStateCompo data={data} updateStateFunc={updateStateFunc}/>
+      </UserContext.Provider>
+      <UseCallback />
+    </div>
+  );
 }
-
-const mapStateToProps = (state) => {
-  console.log("state:", state);
-  return {
-    membersList: state.membersList
-  };
-};
-
-export default connect(mapStateToProps, actions)(App);
+  // createContext
+export const UserContext = createContext();
+export default App;
